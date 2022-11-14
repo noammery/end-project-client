@@ -3,7 +3,7 @@ import { Link } from "react-router-dom";
 import { useSelector } from "react-redux";
 
 export const Navbar = (props) => {
-  const role = useSelector((state) => state.role.role);
+  const role = useSelector((state) => state.user.role);
 
   return (
     <div className="bg-gray-800 w-screen fixed z-50">
@@ -134,14 +134,12 @@ export const Navbar = (props) => {
               </div>
             </div>
           )}
-          {!role ? (
+          {!role && (
             <div>
               <Link to="/login" className="text-white font-semibold">
                 התחברות
               </Link>
             </div>
-          ) : (
-            <dir></dir>
           )}
         </div>
       </div>
