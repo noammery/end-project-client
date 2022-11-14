@@ -1,7 +1,12 @@
 import React from "react";
+import { useState } from "react";
+import { useEffect } from "react";
 import { useForm } from "react-hook-form";
+import axios from "axios";
 
 function DepartmentPostEdit() {
+  const [img, setImg] = useState();
+  const [selectedImg, setSelectedImg] = useState();
   const {
     register,
     handleSubmit,
@@ -9,6 +14,19 @@ function DepartmentPostEdit() {
   } = useForm();
   const onSubmit = (data) => console.log(data);
   console.log(errors);
+
+  useEffect(() => {
+    const formData = new FormData();
+    formData.append("file", img);
+    formData.append("upload_preset", "rtdh7xyk");
+
+    const getImg = async () => {
+      await axios
+        .post("https://api.cloudinary.com/v1_1/dd5csvtjc/image/upload", formData)
+        .then((res) => setSelectedImg(res.data.secure_url));
+    };
+    getImg();
+  }, [img]);
   return (
     <div className="bg-gray-900 min-h-screen mt-24 w-screen">
       <div className=" flex justify-center space-x-7 ">
@@ -69,11 +87,14 @@ function DepartmentPostEdit() {
             className=" flex h-12 px-4  transition duration-200 bg-white border border-gray-300 rounded shadow-sm appearance-none focus:border-purple-400 focus:outline-none focus:shadow-outline md:w-72 lg:w-96 w-72  mb-6"
             type="file"
             accept="image/png/jpeg/svg/gif/jpg"
+            multiple
+            onChange={(e) => setImg(e.target.files[0])}
           />
           <div className="text-center">
             <button
               type="submit"
               className="w-56    h-12 px-6 font-medium tracking-wide text-green-700 transition duration-200 rounded shadow-md  hover:bg-gray-700 hover:border-2 hover:border-gray-900 hover:text-white focus:shadow-outline focus:outline-none mb-4"
+              onClick={()=> onSubmit(handleSubmit)}
             >
               פרסם
             </button>
