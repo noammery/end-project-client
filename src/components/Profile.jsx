@@ -1,9 +1,16 @@
 import { useState } from "react";
 
-export const Profile = () => {
+export const Profile = (props) => {
   const [status, setStatus] = useState("לא נמצא");
+  const userSelect = {
+    fullname:'',
+    phone:'',
+    email:'',
+    department:'',
+    birthday:'',
+    status:''
+  }
 
-  console.log(status);
   return (
     <div className="flex j flex-col items-center mt-32">
       <h1 className="text-3xl font-semibold">הפרופיל שלי</h1>
@@ -14,11 +21,11 @@ export const Profile = () => {
           alt=""
         />
         <ul className="list-none mt-10 text-center">
-          <li>נעם מרי</li>
-          <li>050-264-8712</li>
-          <li>noammery55@gmail.com</li>
-          <li>אגף: </li>
-          <li>01.02.2001</li>
+          <li>{props.userSelect.fullname}</li>
+          <li>{props.userSelect.phone}</li>
+          <li>{props.userSelect.email}</li>
+          <li>{props.userSelect.department}</li>
+          <li>{props.userSelect.birthday}</li>
         </ul>
         <div className="mt-5 text-center">
           <h1 className="font-semibold text-xl mb-5"> סטטוס: {status}</h1>

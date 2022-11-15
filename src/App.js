@@ -101,7 +101,7 @@ function App() {
         <Routes>
           <Route path="profile" element={<Profile />} />
           <Route path="department" element={<Department />} />
-          <Route path="department_edit" element={<DepartmentPostEdit />} />
+          <Route path="department-edit" element={<DepartmentPostEdit />} />
           <Route path="terms" element={<Terms />} />
           <Route path="login" element={<Profile />} />
           <Route path="/" element={<Profile />} />
@@ -122,7 +122,6 @@ function App() {
           <Route path="calendar" element={<Calendar />} />
           <Route path="add-event" element={<AddEvent />} />
           <Route path="bonusses" element={<Bonusses />} />
-
         </Routes>
       )}
     </div>
