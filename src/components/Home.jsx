@@ -6,7 +6,7 @@ import Calendar from "./Calendar";
 
 export const Home = () => {
   const [events, setEvents] = useState();
-
+  const [monthlyBirthday, setMonthlyBirthday] = useState([]);
   const [open, setOpen] = useState(false);
   const handleOpen = () => {
     setOpen(!open);
@@ -15,6 +15,7 @@ export const Home = () => {
   const [modal, setModal] = useState(false);
 
   useEffect(() => {
+    const TodaysMonth = `${new Date().getMonth()}`;
     axios
       .post(`${process.env.REACT_APP_SERVER}/departments/data`, {
         department: "ראשי",
@@ -22,20 +23,22 @@ export const Home = () => {
       .then((res) => setEvents(res.data));
     axios
       .get(`${process.env.REACT_APP_SERVER}/auth/users`)
-      .then((res) => setAllUsers(res.data));
+      .then((res) => {setAllUsers(res.data);
+       for(let i = 0; i < res.data.length; i++) {
+        const birthdayMonth = `${new Date(res.data[i].birthday).getMonth()}`;
+        birthdayMonth === TodaysMonth &&
+        setMonthlyBirthday((l) => [
+          ...l,
+          { fullname: res.data[i].fullname, image: res.data[i].image },
+        ]);
+      }}
+      );
   }, []);
-
-  const usersBirth = [];
-  useEffect(() => {
-    axios
-      .get(`${process.env.REACT_APP_SERVER}/auth/users`, usersBirth)
-      .then((res) => console.log(res.data));
-  }, []);
-  
+  console.log(monthlyBirthday);
   return (
     <div className="bg-gray-200 min-h-screen">
       {modal && (
-        <div className="fixed bg-black bg-opacity-25 backdrop-blur-sm inset-0  flex flex-col items-center">
+        <div className="fixed bg-black bg-opacity-25 backdrop-blur-sm inset-0  flex flex-col items-center z-40">
           <div className="w-screen min-h-screen pt-32 flex flex-col items-center ">
             <ul className="flex flex-col divide divide-y h-96 overflow-scroll scrollbar-hide border-2 rounded-lg mb-2 bg-white">
               {allUsers?.map((user, i) => {
@@ -86,20 +89,36 @@ export const Home = () => {
           </button>
         </div>
         <div className="p-10">
-        <div className="w-screen  flex flex-col items-center">
-          <button onClick={handleOpen}>הצג</button>
-          {open ? (
-        <ul className="menu">
-          <li className="menu-item">
-            <button>Menu 1</button>
-          </li>
-          <li className="menu-item">
-            <button>Menu 2</button>
-          </li>
-        </ul>
-      ) : null}
-          {open ? <div>חוגגים החודש</div> : <div>חוגגים החודש</div>}
-        </div>
+          <div className="w-screen  flex flex-col items-center">
+            <button className="inline-flex items-center justify-center  h-12 px-6 font-medium border-2 border-black rounded-lg bg-gray-600 text-white hover:bg-gray-900 mb-4 transition duration-300 mt-5" onClick={handleOpen}>הצג</button>
+            {open ? (
+              <ul  className="flex flex-col divide divide-y h-96 overflow-scroll scrollbar-hide border-2 rounded-lg mb-2 bg-white">
+                {monthlyBirthday?.map((user, index) => {
+                  return (
+                    <li className="flex flex-row p-2" key={index}>
+                      <div className="select-none cursor-pointer flex flex-1 items-center p-4">
+                        <div className="flex flex-col w-10 h-10 justify-center items-center mr-4">
+                          <div className="block relative">
+                            <img
+                              alt="profil"
+                              src={user.image}
+                              className="mx-auto object-cover rounded-full h-10 w-10 "
+                            />
+                          </div>
+                        </div>
+                        <div className="flex-1 pl-1 mr-16">
+                          <div className="font-medium dark:text-white">
+                            {user.fullname}
+                          </div>
+                        </div>
+                      </div>
+                    </li>
+                  );
+                })}
+              </ul>
+            ) : null}
+            {open ? <div className="inline-flex items-center justify-center  h-12 px-6 font-medium border-2 border-black rounded-lg bg-gray-600 text-white hover:bg-gray-900 mb-4 transition duration-300 mt-5">חוגגים החודש</div> : <div className="inline-flex items-center justify-center  h-12 px-6 font-medium border-2 border-black rounded-lg bg-gray-600 text-white hover:bg-gray-900 mb-4 transition duration-300 mt-5">חוגגים החודש</div>}
+          </div>
           {events?.map((post, index) => {
             return (
               <div

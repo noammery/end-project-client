@@ -34,7 +34,8 @@ export const Profile = () => {
   useEffect(() => {
     const Today = `${new Date().getDate()},${new Date().getMonth()}`
     Today === theBirthday ? setShow(true) : setShow(false)
-  })
+  },[theBirthday])
+
   const setTheStatus = async (e) => {
     const requestObj = {
       email: email,
