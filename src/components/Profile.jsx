@@ -32,9 +32,9 @@ export const Profile = () => {
   const [show, setShow] = useState(false);
 
   useEffect(() => {
-    const Today = `${new Date().getDate()},${new Date().getMonth()}`
-    Today === theBirthday ? setShow(true) : setShow(false)
-  },[theBirthday])
+    const Today = `${new Date().getDate()},${new Date().getMonth()}`;
+    Today === theBirthday ? setShow(true) : setShow(false);
+  }, [show, theBirthday]);
 
   const setTheStatus = async (e) => {
     const requestObj = {
