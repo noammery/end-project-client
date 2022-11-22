@@ -72,10 +72,11 @@ export const AdminRegister = () => {
     try {
       await axios
         .delete(`http://localhost:5000/auth/delete/${deleteUser}`)
-        .then((res) => console.log(res.data));
+        .then((res) => alert(res.data.message));
     } catch (error) {
-      console.log(error);
+      alert("משתמש לא נמצא");
     }
+    setDeleteUser("");
   };
 
   return (
@@ -303,6 +304,7 @@ export const AdminRegister = () => {
                 </div>
               </form>
             </div>
+
             <div className=" bg-white rounded shadow-2x1 mt-20 p-5 flex flex-col items-center justify-center">
               <h3 className="mb-4 text-xl font-semibold sm:text-center sm:mb-6 sm:text-2xl">
                 מחיקת משתמשים:
@@ -313,10 +315,11 @@ export const AdminRegister = () => {
                     htmlFor=""
                     className="flex justify-center text-blue-900 text-xs  font-semibold "
                   >
-                    שם המשתמש שתרצה למחוק:
+                    כתובת האימייל של המשתמש שתרצה למחוק:
                   </label>
                   <input
-                    placeholder="שם המשתמש המדויק"
+                    value={deleteUser}
+                    placeholder="הכנס כתובת אימייל..."
                     required
                     type="text"
                     className="border-2 rounded p-2 w-44"
@@ -339,6 +342,7 @@ export const AdminRegister = () => {
                   />
                 </div>
               </form>
+
             </div>
           </div>
         </div>
